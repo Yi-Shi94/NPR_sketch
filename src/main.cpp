@@ -31,7 +31,7 @@ VertexBufferObject VBO;
 VertexBufferObject VBO_N;
 
 // Contains the vertex positions
-TriMesh object("cube.off",0,0);
+TriMesh object("ini_placeholder",0,0);
 //string fname;
 MatrixXf V(3,3);
 MatrixXf V_normal(3,3);
@@ -52,7 +52,7 @@ int ball = 0;
 
 Vector3d light_pos(0.,0.,5.);
 Vector3d light_color(1.,1.,1.);
-Vector3d cam_pos(0.,1.,3.);
+Vector3d cam_pos(0.,0.8,4.);
 /************/
 
 int get_viewport_image(string fname_out){
@@ -64,13 +64,32 @@ int get_viewport_image(string fname_out){
     int width = viewport[2];
     int height = viewport[3];
     
-    char *data = (char*) malloc((size_t) (width * height * 3)); // 3 components (R, G, B)
+    char *data = (char*) malloc((size_t) (width * height * 3));
+    char *data_cpy = (char*) malloc((size_t) (width * height * 3)); // 3 components (R, G, B)
+    
     if (!data){
         return -1;
     }
     
     glPixelStorei(GL_PACK_ALIGNMENT,1);
     glReadPixels(x,y,width,height,GL_RGB, GL_UNSIGNED_BYTE,data);
+    
+    /*
+    int size = height;
+    for (int cc=0;cc<3;cc++)
+    {
+        for (int xx=0;xx<size;xx++)
+        {
+            for (int yy=0;yy<size;yy++)
+            {
+                data_cpy[cc*size*size+xx*size+yy]   = data[cc*size*size+xx*size+size-yy];
+                
+            }
+        }
+    
+    }
+    */
+    
     int saved = stbi_write_png(fname_out.c_str(), width, height, 3, data, 0);
     
     free(data);
@@ -216,15 +235,24 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int main(int argc, char *argv[])
 {
 
-    if (argc!=4) {
-        cout<<"arg error! Correct arg: [1] file name, [2] mode, [3] input directory, [4] output directory";
+    if (argc!=5) {
+        cout<<"arg error! Correct arg: [1] input_file, [2] output_file [2] mode, [3] scale."<<endl;
         return 0;
     }
     string fname = argv[1];
-    string mode = argv[2];
-    string in_dir = argv[3];
+    string fout = argv[2];
+    string mode = argv[3];
+    string scale_str = argv[4];
+
+    double scale = stod(scale_str);
+    
+    if(scale<=0){
+        cout<<"arg error!scale must be larger than 0!"<<endl;
+        return 0;
+    }
+    //string in_dir = argv[3];
     //double rotation_deg = stoi(mode);
-    cout<<fname<<mode<<in_dir;
+    cout<<fname<<' '<<mode<<endl;//<<in_dir;
     GLFWwindow* window;
     
     // Initialize the library
@@ -448,7 +476,7 @@ int main(int argc, char *argv[])
     VAO.bind();
     program.bind();
     //int width, height;
-    append_mesh(fname+".off");
+    append_mesh(fname);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwSwapBuffers(window);
@@ -456,7 +484,7 @@ int main(int argc, char *argv[])
     
     for (int i=0;i<360;i=i+15){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        object.set_trans_mat(0,0,0,0,i*1.0,0,1);
+        object.set_trans_mat(-object.barycenter(0)*scale,-object.barycenter(1)*scale,-object.barycenter(2)*scale,0,i*1.0,0,scale);
         update_mesh();
     
         glfwGetWindowSize(window, &screenWidth, &screenHeight);
@@ -486,7 +514,7 @@ int main(int argc, char *argv[])
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glDrawArrays(GL_TRIANGLES,object.start,object.tri_num*3);
         
-        int flag = get_viewport_image("data_tmp/"+fname+"_"+mode+"_"+to_string(i)+".png");
+        int flag = get_viewport_image(fout+"_"+mode+"_"+to_string(i)+".png");
         cout<<i<<endl;
         glfwSwapBuffers(window);
         // Poll for and process events

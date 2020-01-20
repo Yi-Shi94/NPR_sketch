@@ -158,7 +158,11 @@ public:
     
     int start = 0;
     int tri_num = 0;
-    void readMesh(string fname);
+    
+    
+    void readoff(string fname);
+    void readobj(string fname);
+    
     void set_trans_mat(float x,float y,float z,float angle_x,float angle_y,float angle_z,float scale);
     void alter_trans_mat(float x,float y,float z,float angle_x,float angle_y,float angle_z,float scale);
     MatrixXf get_trans_mat();
@@ -174,7 +178,6 @@ public:
     
     double is_hit(Vector3d ray_origin,Vector3d ray_direction);
     TriMesh(string name,int start,double z_deg);
-    
 };
 
 void _check_gl_error(const char *file, int line);

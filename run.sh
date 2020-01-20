@@ -1,13 +1,25 @@
-if [ ! -d "data_tmp" ] 
+input_path=$1
+name=$2
+format=$3
+scale=$4
+
+if [ ! -d "data_depth" ]
 then
-    mkdir data_tmp
+    mkdir data_depth
 else
-    echo "tmp dir exist"
+    echo "depth dir exist"
 fi
 
-if [ ! -d "data_out" ] 
+if [ ! -d "data_normal" ]
 then
-    mkdir data_out
+    mkdir data_normal
+else
+    echo "normal dir exist"
+fi
+
+if [ ! -d "data_sketch" ]
+then
+    mkdir data_sketch
 else
     echo "out dir exist"
 fi
@@ -16,11 +28,9 @@ if [ ! -d "build" ]
 then 
     mkdir build 
 fi
-#rm -rf build
+
 cd build && cmake .. && make -j && cd ..
 
-in_dir=$1
-name=$2
-build/npr_sy_bin $name depth $in_dir
-build/npr_sy_bin $name normal $in_dir
-python py_src/edge.py $name data_out 
+build/npr_sy_bin ${input_path}/${name}.${format} data_normal/${name} normal ${scale}
+build/npr_sy_bin ${input_path}/${name}.${format} data_depth/${name} depth ${scale}
+python py_src/edge.py $name data_sketch

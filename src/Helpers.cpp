@@ -195,22 +195,43 @@ void _check_gl_error(const char *file, int line)
   }
 }
 
+void split(const string& s,
+           vector<string>& sv,
+           const char delim = '.') {
+    sv.clear();
+    istringstream iss(s);
+    string temp;
+    
+    while (getline(iss, temp, delim)) {
+        sv.emplace_back(move(temp));
+    }
+    return;
+}
+
 
 TriMesh::TriMesh(string name,int start,double degree){
-    this->readMesh(name);
-    this->compute_bary_n_max();
+    if (name=="ini_placeholder") return;
+    vector<string> name_token;
+    split(name,name_token,'.');
+    if(name_token[1]=="off"){
+        cout<<"off detected"<<endl;
+        this->readoff(name);
+    } else {
+        cout<<"obj detected"<<endl;
+        this->readobj(name);
+    }
     
     Vector3d ini_color(0.1,0.1,0.1);
     this->set_color(ini_color);
-    this->set_trans_mat(0,0,0,0,degree,0,1);
+    this->compute_bary_n_max();
+    //this->set_trans_mat(-this->barycenter(0),-this->barycenter(1),-this->barycenter(2),0,degree,0,1);
     this->start = start;
     cal_normal_matrix();
-    
 }
 
-void TriMesh::readMesh(string fname){
+void TriMesh::readoff(string fname){
     ifstream infile;
-    infile.open("data/"+fname);
+    infile.open(fname);
     if (!infile) cerr << "Could not open the file!" << endl;
     string line_str;
     int index_line = 0;
@@ -263,42 +284,118 @@ void TriMesh::readMesh(string fname){
         index_line ++;
     }
     
-    cout<<"loading success! "<<fname<<' '<<vertices.size()<<' '<<face_index.size()<<faces.size()<<endl;
+    //cout<<"loading success! "<<fname<<' '<<vertices.size()<<' '<<face_index.size()<<' '<<faces.size()<<endl;
     this->faces = faces;
     this->face_index = face_index;
     this->vertices = vertices;
     this->tri_num = this->face_index.size();
-    this->compute_bary_n_max();
-    this->alter_trans_mat(-this->barycenter(0),
-                          -this->barycenter(1),
-                          -this->barycenter(2),
-                          0,0,0,0);
+    //this->compute_bary_n_max();
+    //this->set_trans_mat(this->barycenter(0),
+     //                   this->barycenter(1),
+      //                  this->barycenter(2),
+      //                    0,0,0,1);
+}
+
+void TriMesh::readobj(string fname){
+    
+    vector<Vector3d> vertices;
+    vector<Vector3d> faces;
+    vector<Vector3d> face_index;
+    
+    
+    ifstream fin(fname);
+    int index_line = 0;
+    
+    if(!fin)
+    {
+        cerr << "Could not open the file!" << endl;
+        return;
+    }
+    string line_str;
+    while(getline(fin, line_str))
+    {
+        //cout<<line_str<<endl;
+        vector<string> num_token;
+        if(line_str[0]=='v'&&line_str[1]==' '){
+            
+            split(line_str,num_token,' ');
+            //cout<<"fuck"<<fin<<endl;
+            cout<<index_line<<" :v: "<<num_token[1]<<' '<<num_token[2]<<' '<<num_token[3]<<endl;
+            Vector3d vertex(stod(num_token[1]),stod(num_token[2]),stod(num_token[3]));
+            vertices.push_back(vertex);
+            
+        } else if(line_str[0]=='f'&&line_str[1]==' '){
+            
+           // cout<<line_str<<endl;
+            split(line_str,num_token,' ');
+            vector<string> subtoken_1,subtoken_2,subtoken_3;
+            cout<<num_token[2]<<' '<<num_token[3]<<' '<<num_token[4]<<endl;
+            //cout<<vertices.size()<<endl;
+            split(num_token[2],subtoken_1,'/');
+            split(num_token[3],subtoken_2,'/');
+            split(num_token[4],subtoken_3,'/');
+            int f_x = stoi(subtoken_1[0]);
+            int f_y = stoi(subtoken_2[0]);
+            int f_z = stoi(subtoken_3[0]);
+        
+            cout<<index_line<<" :f: "<<f_x<<' '<<f_y<<' '<<f_z<<endl;
+            Vector3d plain(f_x,f_y,f_z);
+            face_index.push_back(plain);
+            Vector3d a = vertices[f_x-1];
+            Vector3d b = vertices[f_y-1];
+            Vector3d c = vertices[f_z-1];
+            faces.push_back(a);
+            faces.push_back(b);
+            faces.push_back(c);
+        
+        }
+        index_line ++;
+    }
+   
+    cout<<"loading success! "<<fname<<' '<<vertices.size()<<' '<<face_index.size()<<' '<<faces.size()<<endl;
+    this->faces = faces;
+    this->face_index = face_index;
+    this->vertices = vertices;
+    this->tri_num = this->face_index.size();
+//this->compute_bary_n_max();
+    
 }
 
 void TriMesh::compute_bary_n_max(){
      vector<Vector3d> vertices = this->vertices;
-     double x=0,y=0,z=0;
-     //double x_max = -100, x_min = 100,y_max = -100,
-     //       y_min = 100 ,z_max = -100 ,z_min  =100;
+     //double x=0,y=0,z=0;
+     double x_max = -10000, x_min = 10000, y_max = -10000, y_min = 10000 ,z_max = -10000,z_min  =10000;
      for(int i=0;i<vertices.size();i++){
-         x+=vertices[i](0);
-         y+=vertices[i](1);
-         z+=vertices[i](2);
+         if (vertices[i](0)>x_max) x_max = vertices[i](0);
+         else if(vertices[i](0)<x_min) x_min = vertices[i](0);
+         if (vertices[i](1)>y_max) y_max = vertices[i](1);
+         else if(vertices[i](1)<y_min) y_min = vertices[i](1);
+         if (vertices[i](2)>z_max) z_max = vertices[i](2);
+         else if(vertices[i](2)<z_min) z_min = vertices[i](2);
      }
      //cout<<x_max<<" x "<<x_min<<' '<<x_max-x_min <<endl;
      //cout<<y_max<<" y "<<y_min<<' '<<y_max-y_min <<endl;
      //cout<<z_max<<" z "<<z_min<<' '<<z_max-z_min <<endl;
-     x=x/vertices.size();
-     y=y/vertices.size();
-     z=z/vertices.size();
+     x=(x_max+x_min)/2.0;
+     y=(y_max+y_min)/2.0;
+     z=(z_max+z_min)/2.0;
+     cout<<"center: "<<x<<' '<<y<<' '<<z<<endl;
      Vector3d res(x,y,z);
      this->barycenter=res;
-     cout<<res<<endl;
+     //cout<<res<<endl;
 }
 
-void TriMesh::auto_scale(){
-    vertices
+/*
+void TriMesh::compute_stdv(){
+    double variance_x = 0;
+    double variance_y = 0;
+    double
+    for(int i=0;i<vertices.size();i++){
+        vertices[i](0) -
+    }
+    
 }
+*/
 
 
 MatrixXf TriMesh::get_matrix(){
