@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/mmvc/ys/NPR_skecth/src/Helpers.cpp" "/Users/mmvc/ys/NPR_skecth/build/CMakeFiles/npr_sy_bin.dir/src/Helpers.cpp.o"
-  "/Users/mmvc/ys/NPR_skecth/src/main.cpp" "/Users/mmvc/ys/NPR_skecth/build/CMakeFiles/npr_sy_bin.dir/src/main.cpp.o"
+  "/Users/syd/Documents/GitHub/CG/NPR_skecth/src/Helpers.cpp" "/Users/syd/Documents/GitHub/CG/NPR_skecth/build/CMakeFiles/npr_sy_bin.dir/src/Helpers.cpp.o"
+  "/Users/syd/Documents/GitHub/CG/NPR_skecth/src/main.cpp" "/Users/syd/Documents/GitHub/CG/NPR_skecth/build/CMakeFiles/npr_sy_bin.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")
 
@@ -18,7 +18,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/Users/mmvc/ys/NPR_skecth/build/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/Users/syd/Documents/GitHub/CG/NPR_skecth/build/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

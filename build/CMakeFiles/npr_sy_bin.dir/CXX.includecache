@@ -1158,7 +1158,15 @@ GL/glext.h
 GL/glu.h
 -
 
-/Users/mmvc/ys/NPR_skecth/src/Helpers.h
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/Helpers.cpp
+Helpers.h
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/Helpers.h
+iostream
+-
+fstream
+-
+
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/Helpers.h
 string
 -
 vector
@@ -1182,11 +1190,11 @@ windows.h
 GL/gl.h
 -
 
-/Users/mmvc/ys/NPR_skecth/src/main.cpp
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/main.cpp
 Helpers.h
-/Users/mmvc/ys/NPR_skecth/src/Helpers.h
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/Helpers.h
 stb_image_write.h
-/Users/mmvc/ys/NPR_skecth/src/stb_image_write.h
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/stb_image_write.h
 GLFW/glfw3.h
 -
 GLFW/glfw3.h
@@ -1202,9 +1210,9 @@ fstream
 math.h
 -
 Helpers.h
-/Users/mmvc/ys/NPR_skecth/src/Helpers.h
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/Helpers.h
 
-/Users/mmvc/ys/NPR_skecth/src/stb_image_write.h
+/Users/syd/Documents/GitHub/CG/NPR_skecth/src/stb_image_write.h
 stdlib.h
 -
 stdio.h
