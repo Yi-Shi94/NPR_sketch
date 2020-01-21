@@ -5,12 +5,16 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 
-def get_edge(img_pth):
-    img = cv2.imread(img_pth)
-    img = cv2.flip(cv2.GaussianBlur(img,(5,5),0),0)
+def get_edge(img):
+    img = cv2.GaussianBlur(img,(5,5),0)
     img = cv2.Canny(img, 209, 300)
     return img
 
+def flip_save(img_pth):
+    img = cv2.imread(img_pth)
+    img = cv2.flip(img,0)
+    cv2.imwrite(img_pth,img)
+    return img
 
 if __name__ == "__main__":
     
@@ -21,8 +25,8 @@ if __name__ == "__main__":
        
         dpth = os.path.join("data_depth","%s_%s_%d.png"%(name,"depth",i))
         npth = os.path.join("data_normal","%s_%s_%d.png"%(name,"normal",i))
-        de = get_edge(dpth)
-        ne = get_edge(npth)
+        de = get_edge(flip_save(dpth))
+        ne = get_edge(flip_save(npth))
         fe = de+ne
         #_,fe = cv2.threshold(fe,1,255,cv2.THRESH_BINARY)
         
