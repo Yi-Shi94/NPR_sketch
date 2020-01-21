@@ -8,4 +8,4 @@ Edge(<img src="https://github.com/WordBearerYI/NPR_skecth/blob/master/images/dep
 (<img src="https://github.com/WordBearerYI/NPR_skecth/blob/master/images/sketch.gif" width="140" height="140" />) 
   
 Execute run.sh in root directory of this repo. 
-`./run.sh PATH_TO_DATA MESH_NAME`
+`./run.sh PATH_TO_DATA MESH_NAME MESH_FORMAT SCALE_COEFF[>0]`
