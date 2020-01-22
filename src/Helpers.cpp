@@ -352,7 +352,7 @@ void TriMesh::readobj(string fname){
         index_line ++;
     }
    
-    cout<<"loading success! "<<fname<<' '<<vertices.size()<<' '<<face_index.size()<<' '<<faces.size()<<endl;
+    //cout<<"loading success! "<<fname<<' '<<vertices.size()<<' '<<face_index.size()<<' '<<faces.size()<<endl;
     this->faces = faces;
     this->face_index = face_index;
     this->vertices = vertices;

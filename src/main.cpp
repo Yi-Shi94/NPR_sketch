@@ -52,7 +52,7 @@ int ball = 0;
 
 Vector3d light_pos(0.,0.,5.);
 Vector3d light_color(1.,1.,1.);
-Vector3d cam_pos(0.,0.8,5.);
+Vector3d cam_pos(0.,0.8,5.3);
 /************/
 
 int get_viewport_image(string fname_out){
