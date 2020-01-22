@@ -52,7 +52,7 @@ int ball = 0;
 
 Vector3d light_pos(0.,0.,5.);
 Vector3d light_color(1.,1.,1.);
-Vector3d cam_pos(0.,0.8,4.);
+Vector3d cam_pos(0.,0.8,5.);
 /************/
 
 int get_viewport_image(string fname_out){
@@ -93,7 +93,7 @@ int get_viewport_image(string fname_out){
     int saved = stbi_write_png(fname_out.c_str(), width, height, 3, data, 0);
     
     free(data);
-    cout<<"save status:"<<saved<<endl;
+    //cout<<"save status:"<<saved<<endl;
     return saved;
     //writeImg(fname_out,pixel,screenWidth,screenHeight);
 }
@@ -252,7 +252,7 @@ int main(int argc, char *argv[])
     }
     //string in_dir = argv[3];
     //double rotation_deg = stoi(mode);
-    cout<<fname<<' '<<mode<<endl;//<<in_dir;
+    //cout<<fname<<' '<<mode<<endl;//<<in_dir;
     GLFWwindow* window;
     
     // Initialize the library
@@ -292,7 +292,7 @@ int main(int argc, char *argv[])
        fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
       }
       glGetError(); // pull and savely ignonre unhandled errors like GL_INVALID_ENUM
-      fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+      //fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
     #endif
     
     //glDepthFunc(GL_LESS);
@@ -300,9 +300,9 @@ int main(int argc, char *argv[])
     major = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MAJOR);
     minor = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MINOR);
     rev = glfwGetWindowAttrib(window, GLFW_CONTEXT_REVISION);
-    printf("OpenGL version recieved: %d.%d.%d\n", major, minor, rev);
-    printf("Supported OpenGL is %s\n", (const char*)glGetString(GL_VERSION));
-    printf("Supported GLSL is %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+    //printf("OpenGL version recieved: %d.%d.%d\n", major, minor, rev);
+    //printf("Supported OpenGL is %s\n", (const char*)glGetString(GL_VERSION));
+    //printf("Supported GLSL is %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
     
     // Initialize the VAO
     // A Vertex Array Object (or VAO) is an object that describes how the vertex
@@ -515,7 +515,7 @@ int main(int argc, char *argv[])
         glDrawArrays(GL_TRIANGLES,object.start,object.tri_num*3);
         
         int flag = get_viewport_image(fout+'/'+to_string(i)+".png");
-        cout<<i<<endl;
+        //cout<<i<<endl;
         glfwSwapBuffers(window);
         // Poll for and process events
         glfwPollEvents();

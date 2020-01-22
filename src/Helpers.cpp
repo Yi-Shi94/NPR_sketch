@@ -214,10 +214,10 @@ TriMesh::TriMesh(string name,int start,double degree){
     vector<string> name_token;
     split(name,name_token,'.');
     if(name_token[1]=="off"){
-        cout<<"off detected"<<endl;
+        //cout<<"off detected"<<endl;
         this->readoff(name);
     } else {
-        cout<<"obj detected"<<endl;
+        //cout<<"obj detected"<<endl;
         this->readobj(name);
     }
     
@@ -320,7 +320,7 @@ void TriMesh::readobj(string fname){
             
             split(line_str,num_token,' ');
             //cout<<"fuck"<<fin<<endl;
-            cout<<index_line<<" :v: "<<num_token[1]<<' '<<num_token[2]<<' '<<num_token[3]<<endl;
+           // cout<<index_line<<" :v: "<<num_token[1]<<' '<<num_token[2]<<' '<<num_token[3]<<endl;
             Vector3d vertex(stod(num_token[1]),stod(num_token[2]),stod(num_token[3]));
             vertices.push_back(vertex);
             
@@ -329,7 +329,7 @@ void TriMesh::readobj(string fname){
            // cout<<line_str<<endl;
             split(line_str,num_token,' ');
             vector<string> subtoken_1,subtoken_2,subtoken_3;
-            cout<<num_token[2]<<' '<<num_token[3]<<' '<<num_token[4]<<endl;
+            //cout<<num_token[2]<<' '<<num_token[3]<<' '<<num_token[4]<<endl;
             //cout<<vertices.size()<<endl;
             split(num_token[2],subtoken_1,'/');
             split(num_token[3],subtoken_2,'/');
@@ -337,8 +337,8 @@ void TriMesh::readobj(string fname){
             int f_x = stoi(subtoken_1[0]);
             int f_y = stoi(subtoken_2[0]);
             int f_z = stoi(subtoken_3[0]);
-        
-            cout<<index_line<<" :f: "<<f_x<<' '<<f_y<<' '<<f_z<<endl;
+        //
+           // cout<<index_line<<" :f: "<<f_x<<' '<<f_y<<' '<<f_z<<endl;
             Vector3d plain(f_x,f_y,f_z);
             face_index.push_back(plain);
             Vector3d a = vertices[f_x-1];
@@ -379,7 +379,7 @@ void TriMesh::compute_bary_n_max(){
      x=(x_max+x_min)/2.0;
      y=(y_max+y_min)/2.0;
      z=(z_max+z_min)/2.0;
-     cout<<"center: "<<x<<' '<<y<<' '<<z<<endl;
+     //cout<<"center: "<<x<<' '<<y<<' '<<z<<endl;
      Vector3d res(x,y,z);
      this->barycenter=res;
      //cout<<res<<endl;
@@ -424,7 +424,7 @@ void TriMesh::cal_normal_matrix(){
     vector<Vector3d> vertices = this->faces;
     vector<Vector3d> normal_per_ver;
     Matrix4f trans = get_trans_mat();
-    cout<<tri_num<<' '<<vertices.size()<<endl;
+    //cout<<tri_num<<' '<<vertices.size()<<endl;
     for(int i=0;i<vertices.size();i=i+3){
         MatrixXf points(4,3);
         points.col(0) << vertices[i](0),vertices[i](1),vertices[i](2),1;
