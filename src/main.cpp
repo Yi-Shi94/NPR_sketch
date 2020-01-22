@@ -514,7 +514,7 @@ int main(int argc, char *argv[])
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glDrawArrays(GL_TRIANGLES,object.start,object.tri_num*3);
         
-        int flag = get_viewport_image(fout+"_"+mode+"_"+to_string(i)+".png");
+        int flag = get_viewport_image(fout+'/'+to_string(i)+".png");
         cout<<i<<endl;
         glfwSwapBuffers(window);
         // Poll for and process events

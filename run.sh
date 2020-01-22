@@ -1,8 +1,7 @@
 input_path=$1
-name=$2
-format=$3
+output_dir=$2
+name=$3
 scale=$4
-
 if [ ! -d "data_depth" ]
 then
     mkdir data_depth
@@ -27,10 +26,9 @@ fi
 if [ ! -d "build" ]
 then 
     mkdir build 
+    cd build && cmake .. && make -j && cd ..
 fi
 
-cd build && cmake .. && make -j && cd ..
-
-build/npr_sy_bin ${input_path}/${name}.${format} data_normal/${name} normal ${scale}
-build/npr_sy_bin ${input_path}/${name}.${format} data_depth/${name} depth ${scale}
+build/npr_sy_bin ${input_path} data_normal/${name} normal ${scale}
+build/npr_sy_bin ${input_path} data_depth/${name} depth ${scale}
 python py_src/edge.py $name data_sketch

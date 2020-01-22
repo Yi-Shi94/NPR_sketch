@@ -18,13 +18,14 @@ def flip_save(img_pth):
 
 if __name__ == "__main__":
     
-    name = sys.argv[1]
-    out_dir = sys.argv[2]
+    depth_path = sys.argv[1]
+    normal_path = sys.argv[2]
+    out_path = sys.argv[3]
     
     for i in range(0,360,15):
        
-        dpth = os.path.join("data_depth","%s_%s_%d.png"%(name,"depth",i))
-        npth = os.path.join("data_normal","%s_%s_%d.png"%(name,"normal",i))
+        dpth = os.path.join(depth_path,"%d.png"%(i))
+        npth = os.path.join(normal_path,"%d.png"%(i))
         de = get_edge(flip_save(dpth))
         ne = get_edge(flip_save(npth))
         fe = de+ne
@@ -33,12 +34,12 @@ if __name__ == "__main__":
         kernel = np.ones((3,3))
         #fe = cv2.dilate(fe, kernel)
         fe = 255-fe
-        opth = os.path.join(out_dir,"%s_%d.png"%(name,i))
+        opth = os.path.join(out_path,"%d.png"%(i))
         #os.remove(dpth)
         #os.remove(npth)
         cv2.imwrite(opth,fe)
-        cv2.imshow('dst',fe)
-        cv2.waitKey(0)
+        #cv2.imshow('dst',fe)
+        #cv2.waitKey(0)
 
 #img_depth = cv2.imread(imgs_pth[0])
 #img_normal = cv2.imread(img_pth[1])_
